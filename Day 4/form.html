@@ -1,0 +1,5 @@
+<ng-form name="myForm" ng-controller="FormsController" class="my-form">
+    First Name: <input name="name" ng-model="name" required>
+    <span ng-show="myForm.name.$error.required">Required!</span><br>
+    <button ng-click="submit()">SUBMIT</button>
+</ng-form>
