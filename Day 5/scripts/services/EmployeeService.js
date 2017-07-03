@@ -1,7 +1,7 @@
-hrApp.service('EmployeeService', ['$http', 'CommonResourcesFactoryBackup', function ($http, CommonResourcesFactoryBackup) {
+hrApp.service('EmployeeService', ['$http', 'CommonResourcesFactory', function ($http, CommonResourcesFactory) {
         return {
             findById: function (employeeId) {
-                return $http.get(CommonResourcesFactoryBackup.findOneEmployeeUrl + employeeId)
+                return $http.get(CommonResourcesFactory.findOneEmployeeUrl + employeeId)
                     .success(function (data) {
                         return data;
                     })
@@ -19,6 +19,46 @@ hrApp.service('EmployeeService', ['$http', 'CommonResourcesFactoryBackup', funct
                             "managerId": null,
                             "departmentId": 90
                         };
+                    });
+            },
+            getAllJobs: function () {
+                return $http.get(CommonResourcesFactory.findAllJobsUrl)
+                    .success(function (data) {
+                        return data;
+                    })
+                    .error(function (err) {
+                        return [];
+                    });
+            },
+            getManagers: function () {
+                return $http.get(CommonResourcesFactory.findAllEmployeesUrl)
+                    .success(function (data) {
+                        var managers = [];
+                        for (var employee in data) {
+                            if (data[employee].managerId != null) {
+                                var bool = true;
+                                for (var manager in managers) {
+                                    if (managers[manager].managerId.employeeId === data[employee].managerId.employeeId) {
+                                        bool = false;
+                                    }
+                                }
+                                if (bool) {
+                                    managers.push(data[employee]);
+                                }
+                            }
+                        }
+                    })
+                    .error(function (err) {
+                        return [];
+                    });
+            },
+            getDepartments: function () {
+                return $http.get(CommonResourcesFactory.findAllDepartmentsUrl)
+                    .success(function (data) {
+                        return data;
+                    })
+                    .error(function (err) {
+                        return [];
                     });
             }
         }
